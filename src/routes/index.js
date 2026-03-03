@@ -7,6 +7,7 @@ const eventRoutes = require('./event.routes');
 const programRoutes = require('./program.routes');
 const verseRoutes = require('./verse.routes');
 const songRoutes = require('./song.routes');
+const sermonRoutes = require('./sermon.routes');
 const adminRoutes = require('./admin.routes');
 
 // Health check
@@ -25,6 +26,7 @@ router.use('/events', eventRoutes);
 router.use('/programs', programRoutes);
 router.use('/verses', verseRoutes);
 router.use('/songs', songRoutes);
+router.use('/sermons', sermonRoutes);
 router.use('/admin', adminRoutes);
 
 module.exports = router;

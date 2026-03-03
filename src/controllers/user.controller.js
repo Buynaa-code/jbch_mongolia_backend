@@ -9,6 +9,7 @@ const getProfile = asyncHandler(async (req, res, next) => {
   const user = await User.findById(req.user._id)
     .populate('favoriteSongs', 'title artist coverImage')
     .populate('favoriteVerses', 'reference text theme')
+    .populate('favoriteSermons', 'title preacher thumbnailUrl')
     .populate('registeredEvents', 'title startDate location');
 
   ApiResponse.success(res, { user });
@@ -50,11 +51,13 @@ const changePassword = asyncHandler(async (req, res, next) => {
 const getAllFavorites = asyncHandler(async (req, res, next) => {
   const user = await User.findById(req.user._id)
     .populate('favoriteSongs', 'title artist coverImage genre')
-    .populate('favoriteVerses', 'reference text theme book');
+    .populate('favoriteVerses', 'reference text theme book')
+    .populate('favoriteSermons', 'title preacher date thumbnailUrl');
 
   ApiResponse.success(res, {
     songs: user.favoriteSongs,
     verses: user.favoriteVerses,
+    sermons: user.favoriteSermons,
   });
 });
 
@@ -106,6 +109,30 @@ const getFavoriteVerses = asyncHandler(async (req, res, next) => {
   });
 });
 
+// @desc    Get favorite sermons
+// @route   GET /api/users/favorites/sermons
+const getFavoriteSermons = asyncHandler(async (req, res, next) => {
+  const page = parseInt(req.query.page, 10) || 1;
+  const limit = parseInt(req.query.limit, 10) || 10;
+  const skip = (page - 1) * limit;
+
+  const user = await User.findById(req.user._id);
+  const total = user.favoriteSermons.length;
+
+  const populatedUser = await User.findById(req.user._id).populate({
+    path: 'favoriteSermons',
+    options: { skip, limit },
+    select: 'title preacher date thumbnailUrl duration',
+  });
+
+  ApiResponse.paginated(res, populatedUser.favoriteSermons, {
+    page,
+    limit,
+    total,
+    pages: Math.ceil(total / limit),
+  });
+});
+
 module.exports = {
   getProfile,
   updateProfile,
@@ -113,4 +140,5 @@ module.exports = {
   getAllFavorites,
   getFavoriteSongs,
   getFavoriteVerses,
+  getFavoriteSermons,
 };

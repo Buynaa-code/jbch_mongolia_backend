@@ -64,6 +64,12 @@ const userSchema = new mongoose.Schema(
         ref: 'Event',
       },
     ],
+    favoriteSermons: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Sermon',
+      },
+    ],
     lastLogin: {
       type: Date,
     },

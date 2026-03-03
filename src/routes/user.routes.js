@@ -13,6 +13,7 @@ const {
   getAllFavorites,
   getFavoriteSongs,
   getFavoriteVerses,
+  getFavoriteSermons,
 } = require('../controllers/user.controller');
 
 // All routes are protected
@@ -25,5 +26,6 @@ router.put('/change-password', validate(changePasswordSchema), changePassword);
 router.get('/favorites', getAllFavorites);
 router.get('/favorites/songs', getFavoriteSongs);
 router.get('/favorites/verses', getFavoriteVerses);
+router.get('/favorites/sermons', getFavoriteSermons);
 
 module.exports = router;
