@@ -15,13 +15,13 @@ const restrictTo = (...roles) => {
   };
 };
 
-// Check if user is admin
+// Check if user is admin or super-admin
 const isAdmin = (req, res, next) => {
   if (!req.user) {
     return next(ApiError.unauthorized('Not authenticated'));
   }
 
-  if (req.user.role !== 'admin') {
+  if (req.user.role !== 'admin' && req.user.role !== 'super-admin') {
     return next(ApiError.forbidden('Admin access required'));
   }
 

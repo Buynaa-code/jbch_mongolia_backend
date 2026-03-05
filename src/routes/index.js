@@ -10,6 +10,16 @@ const songRoutes = require('./song.routes');
 const sermonRoutes = require('./sermon.routes');
 const adminRoutes = require('./admin.routes');
 
+// Root route handler (for /api)
+router.get('/', (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: 'JBCH Mongolia API',
+    version: '1.0.0',
+    timestamp: new Date().toISOString(),
+  });
+});
+
 // Health check
 router.get('/health', (req, res) => {
   res.status(200).json({
